@@ -1,0 +1,18 @@
+[package]
+name = "horizon-solcarrot"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "LGPL-2.1"
+description = "Spice of Life: Carrot Edition for Horizon: a per-player unique-food history and milestone max-health bonus"
+# Ported from: Spice of Life: Carrot Edition 1.21.1-1.16.6
+# (Cazsius/Spice-of-Life-Carrot-Edition, LGPL-2.1), Minecraft Java 1.21.1 NeoForge.
+# Local-only until the maintainer approves publication (ARCHITECTURE.md §8).
+
+[lib]
+# This exact source is also injected as a same-crate module by horizon-mixins.
+path = "mixins/solcarrot/runtime.rs"
+
+[workspace]
+members = ["tools/audit"]
+resolver = "2"

@@ -1,0 +1,42 @@
+id = "solcarrot"
+kind = "native-mod"
+name = "solcarrot"
+summary = "A Horizon port of solcarrot."
+description = """
+A port of [solcarrot](Cazsius/Spice-of-Life-Carrot-Edition) for Horizon.
+
+**Implemented so far**
+
+- History**: one per player, a set of food **item ids**. A food is recorded
+- when it finishes being eaten; re-eating it adds nothing. Filtered foods
+- (below the nutrition floor, blacklisted, or outside a non-empty whitelist)
+- are still remembered but do not count, exactly as upstream's
+- `FoodList.addFood` does.
+- Milestones**: `milestones` (default `5,10,15,20,25`) count unique counted
+- foods. Each reached milestone grants `2 * hearts_per_milestone` health points
+- on top of vanilla's 20; `base_hearts` other than 10 adds
+
+**Not yet ported**
+
+- nothing recorded yet
+
+Original copyright and licence notices are kept in this repository. Pinned to
+Horizon 1d63e0a and horizon-mixins 5a64af93. Help with the remaining slices is
+welcome.
+"""
+authors = ["AdLf0208"]
+owners = ["AdLf0208"]
+owner_ids = [107615167]
+license = "LGPL-2.1-only"
+source = "https://github.com/AdLf0208/solcarrot"
+icon = "icons/solcarrot.png"
+categories = ["utility"]
+tags = ["port", "horizon"]
+
+[[versions]]
+version = "0.1.0"
+published = "2026-11-10"
+game = "26.3"
+file = "solcarrot.hnmod"
+sha256 = "a6a96c5f7d40af4b094e52134fa9c8638f949ff39563a0fd6ad22593f40e8d2f"
+changelog = "First release"
