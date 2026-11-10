@@ -1,0 +1,117 @@
+[mod]
+id = "solcarrot"
+version = "0.1.0"
+priority = 100
+
+[compatibility]
+horizon_revision = "1d63e0a5a37a7a708eb0b32b49bf0dfeb28ed8a9"
+
+# The pure tracking core (standalone crate lib, injected as
+# `crate::game::solcarrot`).
+[[module]]
+id = "runtime"
+file = "crates/horizon-client/src/game.rs"
+name = "solcarrot"
+source = "runtime.rs"
+
+# Game-side glue: registry reads, persistence, max health, commands.
+[[module]]
+id = "state"
+file = "crates/horizon-client/src/game.rs"
+name = "solcarrot_state"
+source = "support.rs"
+
+# Before the server starts: load or create `config/solcarrot.conf`.
+[[injection]]
+id = "about-to-start"
+hook = "server_about_to_start"
+hook_version = 1
+kind = "HEAD"
+helper = "about.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+# A world opened or closed: load/save the history file.
+[[injection]]
+id = "world-lifecycle"
+hook = "world_lifecycle"
+hook_version = 1
+kind = "HEAD"
+helper = "world.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "phase", ty = "WorldPhase", value = "phase" },
+]
+
+# End of a player's server tick: keep the max-health modifier in step.
+[[injection]]
+id = "player-tick"
+hook = "player_tick"
+hook_version = 1
+kind = "HEAD"
+helper = "player.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+# A use ran its time (API 90): record a food exactly once. A use released
+# early never fires this hook, so it is not counted.
+[[injection]]
+id = "food-finished"
+hook = "living_entity_use_item_finish"
+hook_version = 1
+kind = "HEAD"
+helper = "finished.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+]
+
+# A player died: honour `reset_on_death`.
+[[injection]]
+id = "player-died"
+hook = "player_died"
+hook_version = 1
+kind = "HEAD"
+helper = "dying.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "player", ty = "u128", value = "player" },
+]
+
+# The server is stopping: flush the history file.
+[[injection]]
+id = "server-stopping"
+hook = "server_stopping"
+hook_version = 1
+kind = "HEAD"
+helper = "stopping.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+# World open: declare the `/foodlist` usages.
+[[injection]]
+id = "register-commands"
+hook = "register_commands"
+hook_version = 1
+kind = "HEAD"
+helper = "register.rs"
+bindings = [
+  { name = "commands", ty = "&mut Vec<NativeCommand>", value = "commands" },
+]
+
+# A player typed a registered `/foodlist` usage.
+[[injection]]
+id = "perform-command"
+hook = "perform_command"
+hook_version = 1
+kind = "HEAD"
+helper = "perform.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "player", ty = "&NativeServerPlayer", value = "player" },
+  { name = "command", ty = "&str", value = "command" },
+  { name = "ran", ty = "&mut bool", value = "ran" },
+]
