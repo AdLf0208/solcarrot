@@ -1,0 +1,26 @@
+id = "solcarrot"
+name = "Spice of Life: Carrot Edition"
+version = "0.2.0"
+description = """A port of Spice of Life: Carrot Edition for Horizon: every player keeps the set of
+foods they have eaten, and each configured milestone of unique foods raises their max health by
+2 * hearts_per_milestone (default 5/10/15/20/25 foods, +2 hearts each, so 5 foods reach 24).
+Filtered foods (below minimum_food_value, blacklisted or outside a non-empty whitelist) are
+remembered but do not count. /foodlist size|sync|clear stands in for the food book item and its
+screen this slice does not carry; the history is a file under the world's own mod data."""
+authors = ["Cazsius", "AdLf0208"]
+# A native mod: Rust in src/, compiled by the launcher against the game build [native] pins,
+# beside data/ and assets/. The id is the resource namespace and the only identity: Cargo's
+# package name and version are not the mod's.
+api = "0.2"
+# "both" is the installation side, not the hook's: an integrated server belongs to the
+# client installation, so a LAN host or a single-player world needs both.
+side = "both"
+# The one shared value every manifest carries ("May add blocks, items, mob effects and entity
+# types"). This port registers no content of its own: the food history is runtime data, so the
+# list is the manifest's required shape, not a claim about carried content.
+capabilities = ["registries"]
+
+[native]
+game = "26.3"
+horizon = "0b14f8acfd97fa2c750e42795249dcc981178ca4"
+mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"

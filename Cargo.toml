@@ -1,0 +1,20 @@
+[package]
+# Port of Spice of Life: Carrot Edition 1.21.1-1.16.6
+# (Cazsius/Spice-of-Life-Carrot-Edition, LGPL-2.1). Minecraft Java 1.21.1
+# NeoForge; the port targets Horizon 26.3 at the pin in horizon-mod.toml.
+# Clean-room Rust rewrite from the mod's behaviour (FINDINGS.md); local-only
+# until publishing is approved, publishable under LGPL-2.1 with this source.
+#
+# Cargo's name and version are not the mod's identity: horizon-mod.toml is.
+name = "solcarrot"
+version = "0.2.0"
+edition = "2024"
+license = "LGPL-2.1"
+description = "Spice of Life: Carrot Edition for Horizon: a per-player unique-food history and milestone max-health bonus"
+publish = false
+
+[dependencies]
+# The pinned SDK's API crate, fetched into .horizon/sdk/ by any `cargo horizon-mod` command (the
+# launcher builds against its own copy of the same build). Any other registry dependency must be
+# pinned with `horizon-launcher native-lock .` before building.
+horizon-mod-api = { path = ".horizon/sdk/api/crates/horizon-mod-api" }
